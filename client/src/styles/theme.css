@@ -1,0 +1,150 @@
+/* Theme CSS Variables */
+
+/* Light Theme (Default) */
+:root,
+[data-theme="light"] {
+  --primary-color: #667eea;
+  --primary-hover: #5568d3;
+  --secondary-color: #764ba2;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fb;
+  --bg-tertiary: #f0f0f0;
+  
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  
+  --message-sent-bg: #667eea;
+  --message-sent-text: white;
+  --message-received-bg: #f0f0f0;
+  --message-received-text: #1a1a1a;
+  
+  --toggle-bg-inactive: #d3d3d3;
+  
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-text: #1a1a1a;
+  
+  --hover-bg: #f3f4f6;
+  --active-bg: #e8e8ff;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+  
+  --font-size-small: 12px;
+  --font-size-normal: 14px;
+  --font-size-large: 16px;
+  
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --primary-color: #667eea;
+  --primary-hover: #5568d3;
+  --secondary-color: #764ba2;
+  
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2d2d2d;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-tertiary: #808080;
+  
+  --border-color: #333333;
+  --border-color-light: #2a2a2a;
+  
+  --message-sent-bg: #667eea;
+  --message-sent-text: white;
+  --message-received-bg: #2a2a2a;
+  --message-received-text: #ffffff;
+  
+  --toggle-bg-inactive: #404040;
+  
+  --input-bg: #1a1a1a;
+  --input-border: #404040;
+  --input-text: #ffffff;
+  
+  --hover-bg: #2a2a2a;
+  --active-bg: #333333;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+  
+  --font-size-small: 12px;
+  --font-size-normal: 14px;
+  --font-size-large: 16px;
+  
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Font Size Variants */
+[data-font-size="small"] {
+  --font-size: var(--font-size-small);
+}
+
+[data-font-size="normal"] {
+  --font-size: var(--font-size-normal);
+}
+
+[data-font-size="large"] {
+  --font-size: var(--font-size-large);
+}
+
+/* Compact Mode */
+[data-compact="true"] .user-item {
+  padding: 8px 15px;
+}
+
+[data-compact="true"] .message {
+  margin: 4px 0;
+}
+
+[data-compact="true"] .message-content {
+  padding: 6px 12px;
+}
+
+[data-compact="true"] .users-header {
+  padding: 15px 20px;
+}
+
+[data-compact="true"] .users-header h2 {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+/* Default spacing for normal mode */
+[data-compact="false"] .user-item {
+  padding: 12px 15px;
+}
+
+[data-compact="false"] .message {
+  margin: 8px 0;
+}
+
+[data-compact="false"] .message-content {
+  padding: 8px 12px;
+}
+
+/* Global theme application */
+* {
+  color: var(--text-primary);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+input, textarea, select {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--input-border);
+}
