@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import { chatService } from '../services/api';
 import MessageWindow from '../components/MessageWindow';
@@ -20,6 +20,15 @@ const Chat = () => {
 
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      const response = await chatService.getUsers(token);
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -60,16 +69,7 @@ const Chat = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [token, user, navigate]);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await chatService.getUsers(token);
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
+  }, [token, user, navigate, fetchUsers, selectedUser]);
 
   const handleSelectUser = async (selectedUser) => {
     setSelectedUser(selectedUser);
