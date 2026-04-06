@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "verify-db": "node scripts/verify-mongodb.js"
   },
   "keywords": ["chat", "real-time", "socket.io"],
   "author": "",
