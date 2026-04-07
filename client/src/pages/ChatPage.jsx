@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import { chatService, groupService } from '../services/api';
@@ -94,29 +94,33 @@ const ChatPage = () => {
     };
   }, [token, user, navigate]);
 
-  useEffect(() => {
-    if (activeTab === 'groups') {
-      fetchGroups();
-    }
-  }, [activeTab]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await chatService.getUsers(token);
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
+  }, [token]);
 
-  const fetchGroups = async () => {
+  const fetchGroups = useCallback(async () => {
     try {
       const response = await groupService.getMyGroups(token);
       setGroups(response.data);
     } catch (error) {
       console.error('Error fetching groups:', error);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  useEffect(() => {
+    if (activeTab === 'groups') {
+      fetchGroups();
+    }
+  }, [activeTab, fetchGroups]);
 
   const handleSelectUser = async (selectedUser) => {
     setSelectedGroup(null);
