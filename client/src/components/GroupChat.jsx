@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/GroupChat.css';
 
 const GroupChat = ({ group, currentUser, socket, onBack }) => {
@@ -8,7 +8,29 @@ const GroupChat = ({ group, currentUser, socket, onBack }) => {
 
   const token = localStorage.getItem('token');
 
+  const fetchGroupMessages = useCallback(async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/groups/${group._id}/messages`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+      setMessages(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setLoading(false);
+    }
+  }, [group._id, token]);
+
+  const handleReceiveMessage = useCallback((message) => {
+    if (message.group === group._id) {
+      setMessages(prev => [...prev, message]);
+    }
+  }, [group._id]);
+
   useEffect(() => {
+    if (!group._id) return;
+    
     fetchGroupMessages();
     
     if (socket) {
@@ -22,27 +44,7 @@ const GroupChat = ({ group, currentUser, socket, onBack }) => {
         socket.off('receive_group_message', handleReceiveMessage);
       }
     };
-  }, [group._id]);
-
-  const fetchGroupMessages = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/groups/${group._id}/messages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-      setMessages(data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-      setLoading(false);
-    }
-  };
-
-  const handleReceiveMessage = (message) => {
-    if (message.group === group._id) {
-      setMessages(prev => [...prev, message]);
-    }
-  };
+  }, [group._id, socket, fetchGroupMessages, handleReceiveMessage]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();

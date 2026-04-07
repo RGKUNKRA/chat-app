@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { chatService } from '../services/api';
 import '../styles/UserSearch.css';
 
 const UserSearch = ({ onSelectUser }) => {

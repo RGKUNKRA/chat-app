@@ -72,16 +72,12 @@ const Chat = () => {
     };
   }, [token, user, navigate, fetchUsers, selectedUser]);
 
-  useEffect(() => {
-    if (activeTab === 'groups') {
-      fetchGroups();
-    }
-  }, [activeTab]);
-    setSelectedUser(selectedUser);
+  const handleSelectUser = async (selectedUserArg) => {
+    setSelectedUser(selectedUserArg);
     setTyping(false);
 
     try {
-      const response = await chatService.getMessages(selectedUser._id, token);
+      const response = await chatService.getMessages(selectedUserArg._id, token);
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
