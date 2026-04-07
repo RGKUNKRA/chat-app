@@ -12,17 +12,41 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validateForm = () => {
+    if (!formData.email.trim()) {
+      setError('Email is required');
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('Please enter a valid email address');
+      return false;
+    }
+    if (!formData.password) {
+      setError('Password is required');
+      return false;
+    }
+    return true;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -31,7 +55,9 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(response.data.user));
       navigate('/chat');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      const errorMessage = err.response?.data?.message || err.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      console.error('Login error:', err);
     } finally {
       setLoading(false);
     }
@@ -41,35 +67,51 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-form">
         <h1>Welcome Back</h1>
-        {error && <p className="error">{error}</p>}
+        <p className="subtitle">Sign in to your RG Chat account</p>
+
+        {error && (
+          <div className="error-box">
+            <p className="error">⚠️ {error}</p>
+          </div>
+        )}
         
         <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
           
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
           
-          <button type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+          <button type="submit" disabled={loading} className="submit-btn">
+            {loading ? '⏳ Signing in...' : '✓ Sign In'}
           </button>
         </form>
 
-        <p>
-          Don't have an account? <a href="/register">Register here</a>
-        </p>
+        <div className="auth-footer">
+          <p>
+            Don't have an account? <a href="/register">Create one here</a>
+          </p>
+        </div>
       </div>
     </div>
   );

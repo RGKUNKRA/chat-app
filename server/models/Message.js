@@ -9,7 +9,12 @@ const messageSchema = new mongoose.Schema({
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'Receiver is required']
+    default: null
+  },
+  group: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group',
+    default: null
   },
   text: {
     type: String,
@@ -18,6 +23,21 @@ const messageSchema = new mongoose.Schema({
     maxlength: [2000, 'Message cannot exceed 2000 characters'],
     trim: true
   },
+  status: {
+    type: String,
+    enum: ['sent', 'delivered', 'read'],
+    default: 'sent'
+  },
+  readBy: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    readAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   timestamp: {
     type: Date,
     default: Date.now,

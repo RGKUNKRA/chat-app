@@ -72,7 +72,11 @@ const Chat = () => {
     };
   }, [token, user, navigate, fetchUsers, selectedUser]);
 
-  const handleSelectUser = async (selectedUser) => {
+  useEffect(() => {
+    if (activeTab === 'groups') {
+      fetchGroups();
+    }
+  }, [activeTab]);
     setSelectedUser(selectedUser);
     setTyping(false);
 

@@ -2,17 +2,41 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+console.log('API URL:', API_URL);
+
+// Create axios instance with default config
+const apiClient = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+// Add response interceptor for error handling
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+    return Promise.reject(error);
+  }
+);
+
 const authService = {
   register: (userData) => {
-    return axios.post(`${API_URL}/auth/register`, userData);
+    return apiClient.post('/auth/register', userData);
   },
 
   login: (credentials) => {
-    return axios.post(`${API_URL}/auth/login`, credentials);
+    return apiClient.post('/auth/login', credentials);
   },
 
   getProfile: (token) => {
-    return axios.get(`${API_URL}/chat/profile`, {
+    return apiClient.get('/chat/profile', {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
@@ -20,22 +44,36 @@ const authService = {
 
 const chatService = {
   getUsers: (token) => {
-    return axios.get(`${API_URL}/chat/users`, {
+    return apiClient.get('/chat/users', {
       headers: { Authorization: `Bearer ${token}` }
     });
   },
 
   getMessages: (userId, token) => {
-    return axios.get(`${API_URL}/chat/messages/${userId}`, {
+    return apiClient.get(`/chat/messages/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  },
+
+  markMessagesAsRead: (userId, token) => {
+    return apiClient.put(`/chat/messages/user/${userId}/read-all`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     });
   },
 
   updateStatus: (status, token) => {
-    return axios.put(`${API_URL}/chat/status`, { status }, {
+    return apiClient.put('/chat/status', { status }, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
 };
 
-export { authService, chatService };
+const groupService = {
+  getMyGroups: (token) => {
+    return apiClient.get('/groups/my-groups', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+};
+
+export { authService, chatService, groupService };

@@ -1,0 +1,144 @@
+.group-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.group-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: white;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #667eea;
+  padding: 0 5px;
+}
+
+.back-button:hover {
+  opacity: 0.8;
+}
+
+.group-info h2 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.member-count {
+  margin: 4px 0 0 0;
+  color: #999;
+  font-size: 12px;
+}
+
+.group-chat .messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+}
+
+.group-chat .message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.group-chat .message.sent {
+  align-items: flex-end;
+}
+
+.group-chat .message.received {
+  align-items: flex-start;
+}
+
+.message-sender {
+  font-size: 11px;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 4px;
+  padding: 0 15px;
+}
+
+.group-chat .message-content {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  word-wrap: break-word;
+}
+
+.group-chat .message.sent .message-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.group-chat .message.received .message-content {
+  background: #f0f0f0;
+  color: #333;
+  border-bottom-left-radius: 0;
+}
+
+.group-chat .message-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.group-chat .message-time {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.group-chat .loading,
+.group-chat .no-messages {
+  text-align: center;
+  color: #999;
+  margin: auto;
+}
+
+.group-chat .message-form {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid #eee;
+  gap: 10px;
+  background: white;
+}
+
+.group-chat .message-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+.group-chat .message-input:focus {
+  border-color: #667eea;
+}
+
+.group-chat .send-button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.group-chat .send-button:hover {
+  transform: scale(1.05);
+}

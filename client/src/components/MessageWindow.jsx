@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/MessageWindow.css';
 
-const MessageWindow = ({ messages, currentUser, onSendMessage, onTyping, isTyping }) => {
+const MessageWindow = ({ messages, currentUser, onSendMessage, onTyping, isTyping, onMarkRead }) => {
   const [messageText, setMessageText] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -9,8 +9,36 @@ const MessageWindow = ({ messages, currentUser, onSendMessage, onTyping, isTypin
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    // Mark received messages as read when they're visible
+    messages.forEach((msg) => {
+      if (msg.sender !== currentUser.id && msg.status !== 'read' && onMarkRead) {
+        onMarkRead(msg.id);
+      }
+    });
+  }, [messages, currentUser.id, onMarkRead]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'sent':
+        return '✓';
+      case 'delivered':
+        return '✓✓';
+      case 'read':
+        return '✓✓';
+      default:
+        return '';
+    }
+  };
+
+  const getStatusClass = (status) => {
+    if (status === 'read') return 'read';
+    if (status === 'delivered') return 'delivered';
+    return 'sent';
   };
 
   const handleSendMessage = (e) => {
@@ -40,9 +68,16 @@ const MessageWindow = ({ messages, currentUser, onSendMessage, onTyping, isTypin
             >
               <div className="message-content">
                 <p>{msg.text}</p>
-                <span className="message-time">
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </span>
+                <div className="message-footer">
+                  <span className="message-time">
+                    {new Date(msg.timestamp).toLocaleTimeString()}
+                  </span>
+                  {msg.sender === currentUser.id && (
+                    <span className={`status-icon ${getStatusClass(msg.status)}`}>
+                      {getStatusIcon(msg.status)}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           ))

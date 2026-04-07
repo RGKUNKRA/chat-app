@@ -211,6 +211,66 @@
   cursor: not-allowed;
 }
 
+/* Message Footer & Status Icons */
+.message-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.75;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.message.sent .message-footer {
+  color: rgba(255, 255, 255, 0.75);
+  justify-content: flex-end;
+}
+
+.message.received .message-footer {
+  color: var(--text-secondary);
+  justify-content: flex-start;
+}
+
+.status-icon {
+  font-size: 12px;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  margin-top: 1px;
+}
+
+.status-icon.sent {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.status-icon.delivered {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 900;
+}
+
+.status-icon.read {
+  color: #4DB8FF;
+  font-weight: 900;
+  animation: readPulse 0.6s ease-out;
+}
+
+@keyframes readPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .message-content {
