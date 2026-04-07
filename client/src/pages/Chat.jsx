@@ -39,7 +39,8 @@ const Chat = () => {
     setCurrentUser(user);
 
     // Connect to socket
-    const newSocket = io('http://localhost:5000');
+    const socketUrl = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+    const newSocket = io(socketUrl);
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
