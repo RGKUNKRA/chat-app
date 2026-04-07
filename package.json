@@ -7,9 +7,14 @@
     "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
     "server:dev": "cd server && npm run dev",
     "client:dev": "cd client && npm start",
-    "build": "cd client && npm install --legacy-peer-deps && npm run build && cd ../server && npm install",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm install",
     "build-and-serve": "npm run build && npm start",
-    "postinstall": "cd client && npm install --legacy-peer-deps && cd ../server && npm install"
+    "postinstall": "npm run install:all",
+    "install:all": "npm run install:client && npm run install:server",
+    "install:client": "cd client && npm install --legacy-peer-deps",
+    "install:server": "cd server && npm install"
   },
   "engines": {
     "node": "20.x"
