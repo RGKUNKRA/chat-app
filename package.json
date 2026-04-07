@@ -1,0 +1,17 @@
+{
+  "name": "rg-chat",
+  "version": "1.0.0",
+  "description": "RG Chat - Full-stack real-time chat application",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "build-and-serve": "npm run build && npm start",
+    "postinstall": "cd client && npm install && cd ../server && npm install"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

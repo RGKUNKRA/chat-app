@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const connectDB = require('./config/db');
 const Message = require('./models/Message');
 
@@ -43,6 +44,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/search', searchRoutes);
+
+// Serve React app
+const buildPath = path.join(__dirname, '../client/build');
+app.use(express.static(buildPath));
+
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+});
 
 // Socket.io events
 const activeUsers = {};
