@@ -1,16 +1,14 @@
 {
   "name": "rg-chat",
   "version": "1.0.0",
-  "description": "RG Chat - Full-stack real-time chat app with React & Express",
+  "description": "RG Chat - Full-stack real-time chat app",
   "main": "server/server.js",
   "engines": {
-    "node": "20.x",
-    "npm": "10.x"
+    "node": "20.x"
   },
   "scripts": {
     "start": "cd server && npm start",
-    "build": "npm run build:server",
-    "build:server": "cd server && npm install",
-    "postinstall": "cd client && npm install --legacy-peer-deps && npm run build && cd .. && cd server && npm install"
+    "dev": "concurrently \"cd client && npm start\" \"cd server && npm run dev\"",
+    "postinstall": "cd client && npm install --legacy-peer-deps && npm run build && cd ../server && npm install"
   }
 }
