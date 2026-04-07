@@ -87,11 +87,10 @@ const ChatPage = () => {
       );
     });
 
-    fetchUsers();
-
     return () => {
       newSocket.disconnect();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, user, navigate]);
 
   const fetchUsers = useCallback(async () => {
