@@ -38,13 +38,42 @@ const Chat = () => {
 
     setCurrentUser(user);
 
-    // Connect to socket
-    const socketUrl = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
-    const newSocket = io(socketUrl);
+    // Connect to socket with proper URL handling
+    const getSocketUrl = () => {
+      if (process.env.REACT_APP_SOCKET_URL) {
+        return process.env.REACT_APP_SOCKET_URL;
+      }
+      
+      // In production, use relative path (same host as frontend)
+      if (process.env.NODE_ENV === 'production') {
+        return window.location.origin;
+      }
+      
+      // In development, use localhost
+      return 'http://localhost:5000';
+    };
+
+    const socketUrl = getSocketUrl();
+    console.log('Connecting to socket:', socketUrl);
+    
+    const newSocket = io(socketUrl, {
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 10,
+      transports: ['websocket', 'polling']
+    });
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
+      console.log('Socket connected');
       newSocket.emit('user_join', user.id);
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Socket disconnected');
     });
 
     newSocket.on('receive_message', (message) => {

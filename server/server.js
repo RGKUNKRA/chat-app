@@ -19,11 +19,19 @@ const server = http.createServer(app);
 
 // Handle CORS - allow both development and production URLs
 const clientUrl = process.env.CLIENT_URL || 'http://localhost:3001';
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+// Build CORS origin list
+const corsOrigins = isDevelopment 
+  ? [clientUrl, 'http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001']
+  : [clientUrl]; // Production: only allow CLIENT_URL
+
 console.log('Client URL allowed:', clientUrl);
+console.log('CORS Origins:', corsOrigins);
 
 const io = socketIo(server, {
   cors: {
-    origin: [clientUrl, 'http://localhost:3000', 'http://localhost:3001'],
+    origin: corsOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -31,7 +39,7 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: [clientUrl, 'http://localhost:3000', 'http://localhost:3001'],
+  origin: corsOrigins,
   credentials: true
 }));
 app.use(express.json());

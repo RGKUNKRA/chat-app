@@ -1,12 +1,24 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || (
-  process.env.NODE_ENV === 'production' 
-    ? '/api' 
-    : 'http://localhost:5000/api'
-);
+// Determine API URL based on environment
+const getAPIUrl = () => {
+  // If explicitly set via environment variable, use it
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  
+  // In production, use same origin with /api path (app and api on same server)
+  if (process.env.NODE_ENV === 'production') {
+    return `${window.location.origin}/api`;
+  }
+  
+  // In development, use localhost
+  return 'http://localhost:5000/api';
+};
 
-console.log('API URL:', API_URL);
+const API_URL = getAPIUrl();
+
+console.log('API URL:', API_URL, 'Environment:', process.env.NODE_ENV);
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -24,8 +36,15 @@ apiClient.interceptors.response.use(
     console.error('API Error:', {
       message: error.message,
       status: error.response?.status,
+      url: error.config?.url,
       data: error.response?.data
     });
+    
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network Error - No response received. Check if server is running and CORS is configured correctly.');
+    }
+    
     return Promise.reject(error);
   }
 );
