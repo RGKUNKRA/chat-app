@@ -78,7 +78,7 @@ const GroupChat = ({ group, currentUser, socket, onBack }) => {
         ) : (
           messages.map((msg, index) => (
             <div
-              key={index}
+              key={msg._id}
               className={`message ${msg.sender._id === currentUser.id ? 'sent' : 'received'}`}
             >
               <div className="message-sender">{msg.sender.username}</div>

@@ -63,7 +63,7 @@ const MessageWindow = ({ messages, currentUser, onSendMessage, onTyping, isTypin
         ) : (
           messages.map((msg, index) => (
             <div
-              key={index}
+              key={msg.id}
               className={`message ${msg.sender === currentUser.id ? 'sent' : 'received'}`}
             >
               <div className="message-content">
